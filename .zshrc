@@ -100,6 +100,7 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 alias python='python3'
 alias glp='git lg'
+alias sc='source ~/.zshrc'
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -122,3 +123,23 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 export PATH="/usr/lowhical/opt/heroku-node/bin:$PATH"
+export DISABLE_AUTO_TITLE="true"
+
+export NVIM_CONFIG="~/.config/nvim"
+
+# Neovim Config Switcher
+alias nvim-lazy="NVIM_APPNAME=Lazy nvim"
+
+function nvims() {
+  items=("default" "Lazy")
+  config=$(printf "%s\n" "${items[@]}" | fzf --prompt=" Neovim Config  " --height=~50% --layout=reverse --border --exit-0)
+  if [[ -z $config ]]; then
+    echo "Nothing selected"
+    return 0
+  elif [[ $config == "default" ]]; then
+    config=""
+  fi
+  NVIM_APPNAME=$config nvim $@
+}
+
+bindkey -s ^a "nvims\n"
